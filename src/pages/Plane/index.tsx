@@ -1,17 +1,10 @@
 import {
-  Camera,
-  Cartesian4,
   Cesium3DTileset,
   CesiumTerrainProvider,
-  Quaternion,
   SceneMode,
   Viewer,
 } from "cesium";
 import {
-  Color,
-  PolylineGlowMaterialProperty,
-  SampledPositionProperty,
-  viewerCesium3DTilesInspectorMixin,
   Math as CesiumMath,
   Cartesian3,
   HeadingPitchRoll,
@@ -21,11 +14,8 @@ import {
   Ellipsoid,
   ModelAnimationLoop,
   Matrix4,
-  JulianDate,
-  Entity,
 } from "cesium";
-import { useEffect, useRef, useState } from "react";
-import PlaneGame from "./planeGame";
+import { useEffect, useRef } from "react";
 
 function Plane() {
   const viewer = useRef<Viewer>(); //viewer
