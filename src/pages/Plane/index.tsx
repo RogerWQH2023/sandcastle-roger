@@ -306,7 +306,7 @@ function Plane() {
                 }, 50); */
 
                 //使用buffer
-                if (cameraBuffer.current.length < 10) {
+                if (cameraBuffer.current.length < 12) {
                   cameraBuffer.current.push({
                     position: cameraPosition,
                     hpRoll: hpRoll,
