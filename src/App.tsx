@@ -59,7 +59,7 @@ function App() {
           <div className="absolute left-0 h-[100%] w-[15%] min-w-[200px] bg-indigo-500 rounded-b-[10px]">
             <div className="absolute top-[0px] left-[10px] right-[10px]">
               <a
-                href="https://github.com/RogerWQH2023"
+                href="https://github.com/RogerWQH2023/sandcastle-roger"
                 target="_blank"
                 title="Game Collection Github Page"
               >
