@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes wave {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  @variants responsive {
+    .animate-wave {
+      animation: wave 1.5s ease-in-out infinite;
+    }
+  }
+}
