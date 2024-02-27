@@ -1,30 +1,28 @@
-# React + TypeScript + Vite
+# SandCastle-Roger
+![Nature](./public/samplePage.jpg)
+我用来测试各种东西，实现各种想法的沙盒
+- 测试网站：https://sandcastle-roger.pages.dev/
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 主要内容
 
-## Expanding the ESLint configuration
+使用vite+react+ts搭建。使用Cesium实现三维地球相关的内容
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- 启动项目
+```
+yarn install
+yarn dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- [x] 完成项目初始化
+  - [x] 仿制飞书界面构建主界面
+  - [x] 卡片式分页（没搞路由）
+  - [x] 过渡动画添加
+- [ ] 构建homePage
+- [ ] 移植并改进扫雷
+- [x] 构建贪吃蛇项目
+  - [x] 性能优化
+- [ ] 优化CesiumSandCastle的小飞机项目（HeadingPitchRoll）
+  -  [飞机项目文档](./src/pages/Plane/README.md)
+- [x] 部署网站
