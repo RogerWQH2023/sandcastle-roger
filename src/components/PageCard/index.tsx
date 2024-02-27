@@ -1,5 +1,3 @@
-import UnderConstruction from "@/pages/UnderConstruction";
-
 export type PageInfo = {
   iconUrl?: string; //图标的url
   title?: string; //文字内容

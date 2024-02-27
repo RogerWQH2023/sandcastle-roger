@@ -1,20 +1,12 @@
 import {
-  Color,
-  PolylineGlowMaterialProperty,
-  SampledPositionProperty,
   Viewer,
-  viewerCesium3DTilesInspectorMixin,
   Math as CesiumMath,
   Cartesian3,
   HeadingPitchRoll,
-  HeadingPitchRange,
   Model,
   Transforms,
   Ellipsoid,
-  ModelAnimationLoop,
   Matrix4,
-  JulianDate,
-  Entity,
 } from "cesium";
 import { MutableRefObject, useEffect, useRef } from "react";
 
