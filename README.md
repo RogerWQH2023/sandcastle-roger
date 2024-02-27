@@ -9,20 +9,21 @@
 
 使用vite+react+ts搭建。使用Cesium实现三维地球相关的内容
 
-- 启动项目
+### 启动项目
 ```
 yarn install
 yarn dev
 ```
-
+### 待办事项
 - [x] 完成项目初始化
   - [x] 仿制飞书界面构建主界面
   - [x] 卡片式分页（没搞路由）
   - [x] 过渡动画添加
 - [ ] 构建homePage
 - [ ] 移植并改进扫雷
-- [x] 构建贪吃蛇项目
+- [ ] 贪吃蛇项目
   - [x] 性能优化
+  - [ ] 增加游戏规则（胜利失败等）
 - [ ] 优化CesiumSandCastle的小飞机项目（HeadingPitchRoll）
   -  [飞机项目文档](./src/pages/Plane/README.md)
 - [x] 部署网站
