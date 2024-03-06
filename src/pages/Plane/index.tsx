@@ -1,8 +1,10 @@
 import {
   Cesium3DTileset,
   CesiumTerrainProvider,
+  Ion,
   SceneMode,
   Viewer,
+  createOsmBuildingsAsync,
 } from "cesium";
 import {
   Math as CesiumMath,
@@ -17,6 +19,9 @@ import {
 } from "cesium";
 import { useEffect, useRef } from "react";
 
+Ion.defaultAccessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI4MTIzMzM3ZS1lNWEyLTRmNTAtYmI2Zi1hNjBlZTA3YTAyN2UiLCJpZCI6MTM1ODMzLCJpYXQiOjE2ODI1ODIzNjl9.04HzJGnDmmXKRbSzdhvE7epR9ny1xibwFRIZ1ipOM6Y";
+
 function Plane() {
   const viewer = useRef<Viewer>(); //viewer
   const keyDownListener = useRef<(e: KeyboardEvent) => void>(); //键盘按下的事件
@@ -27,6 +32,8 @@ function Plane() {
   const headingMinus = useRef<boolean>(); //标识，是否处于左转状态
   const pitchPlus = useRef<boolean>(); //标识，是否处于抬头状态
   const pitchMinus = useRef<boolean>(); //标识，是否处于低头状态
+  const rollPlus = useRef<boolean>(); //标识，是否处于右旋状态
+  const rollMinus = useRef<boolean>(); //标识，是否处于左旋状态
   const cameraBuffer = useRef<
     Array<{ position: Cartesian3; hpRoll: HeadingPitchRoll }>
   >(new Array<{ position: Cartesian3; hpRoll: HeadingPitchRoll }>());
@@ -35,6 +42,7 @@ function Plane() {
     // 初始化Cesium
     const _viewer = new Viewer("cesiumContainer", {
       //terrainProvider: await terrain,
+      vrButton: true, //开启VR按钮
       animation: true, //是否创建动画小器件，左下角仪表
       shouldAnimate: true, //让动画一直运行，不用点一下
       baseLayerPicker: false, //是否显示图层选择器
@@ -68,6 +76,15 @@ function Plane() {
       console.log("Terrain准备就绪");
       _viewer.scene.terrainProvider = terrain;
 
+      //尝试加载房屋模型
+      try {
+        const buildingTileset = await createOsmBuildingsAsync();
+        _viewer.scene.primitives.add(buildingTileset);
+      } catch (error) {
+        console.log(`Error loading tileset: ${error}`);
+      }
+      // Add Cesium OSM Buildings, a global 3D buildings layer.
+
       //初始化各参数
       console.log("飞机运行函数执行");
 
@@ -88,12 +105,12 @@ function Plane() {
       //方向变化响应的度数
       let deltaRadians = CesiumMath.toRadians(0.5);
       //加入房屋模型
-      try {
+      /* try {
         const tileset = await Cesium3DTileset.fromIonAssetId(75343);
         _viewer.scene.primitives.add(tileset);
       } catch (error) {
         console.log(`Error loading tileset: ${error}`);
-      }
+      } */
       //使用primitive加载模型
       if (!planeModel.current) {
         planeModel.current = true;
@@ -166,6 +183,14 @@ function Plane() {
                 headingMinus.current = true;
                 console.log("左转:heading减少，当前转速为" + deltaRadians);
                 break;
+              case "e":
+                rollPlus.current = true;
+                console.log("右旋:roll增加，当前转速为" + deltaRadians);
+                break;
+              case "q":
+                rollMinus.current = true;
+                console.log("左旋:roll减小，当前转速为" + deltaRadians);
+                break;
               case "j":
                 speed = 100000;
                 break;
@@ -196,6 +221,14 @@ function Plane() {
               case "a":
                 headingMinus.current = false;
                 console.log("左转结束:heading当前为- " + hpRoll.heading);
+                break;
+              case "e":
+                rollPlus.current = false;
+                console.log("右旋结束:roll当前为" + hpRoll.roll);
+                break;
+              case "q":
+                rollMinus.current = false;
+                console.log("左旋结束:roll当前为" + hpRoll.roll);
                 break;
             }
           };
@@ -231,12 +264,41 @@ function Plane() {
                 if (hpRoll.heading >= CesiumMath.TWO_PI) {
                   hpRoll.heading -= CesiumMath.TWO_PI;
                 }
+                //能否根据飞机当前位置转向
+                /* hpRoll.heading += deltaRadians * Math.cos(hpRoll.roll);
+                hpRoll.pitch += deltaRadians * Math.sin(hpRoll.roll);
+                if (hpRoll.pitch >= CesiumMath.TWO_PI) {
+                  hpRoll.pitch -= CesiumMath.TWO_PI;
+                }
+                if (hpRoll.heading >= CesiumMath.TWO_PI) {
+                  hpRoll.heading -= CesiumMath.TWO_PI;
+                }
+                if (hpRoll.pitch < 0) {
+                  hpRoll.pitch += CesiumMath.TWO_PI;
+                }
+                if (hpRoll.heading < 0) {
+                  hpRoll.heading += CesiumMath.TWO_PI;
+                }*/
               }
               if (headingMinus.current) {
                 hpRoll.heading -= deltaRadians;
                 //判断是否小于0
                 if (hpRoll.heading < 0) {
                   hpRoll.heading += CesiumMath.TWO_PI;
+                }
+              }
+              if (rollPlus.current) {
+                hpRoll.roll += deltaRadians;
+                //判断是否超过2Π
+                if (hpRoll.roll >= CesiumMath.TWO_PI) {
+                  hpRoll.roll -= CesiumMath.TWO_PI;
+                }
+              }
+              if (rollMinus.current) {
+                hpRoll.roll -= deltaRadians;
+                //判断是否小于0
+                if (hpRoll.roll < 0) {
+                  hpRoll.roll += CesiumMath.TWO_PI;
                 }
               }
               speedVector = Cartesian3.multiplyByScalar(
